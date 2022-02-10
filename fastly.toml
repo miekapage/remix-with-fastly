@@ -1,0 +1,7 @@
+# This file describes a Fastly Compute@Edge package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+description = "remix with fastly compute@edge adapter"
+language = "javascript"
+manifest_version = 2
+name = "remix-fastly-compute-edge-adapter"

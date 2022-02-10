@@ -1,0 +1,13 @@
+node_modules
+
+# fastly
+/bin
+/pkg
+
+# remix
+/.cache
+/src/build/*
+/public/build
+
+# keep the build type file
+!/src/build/index.d.ts

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "lib": ["ES6"],
+    "module": "es6",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": "./bin/",
+    "skipLibCheck": true,
+    "target": "es5"
+  },
+  "include": ["@types/**/*", "**/*.ts"]
+}
