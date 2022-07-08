@@ -12,7 +12,7 @@ Fastly code. This is any request/response handling, and is also the adapter to s
 
 ### Set up environment
 
-- Install [`fastly` cli](https://developer.fastly.com/learning/compute/#download-and-install-the-fastly-cli)
+- Install [`fastly` cli](https://developer.fastly.com/learning/compute/#download-and-install-the-fastly-cli). NB: The scripts are written using v3.1.1. Commands/flags may differ with future versions.
 
 - Run `npm install`
 
