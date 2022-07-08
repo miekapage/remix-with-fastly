@@ -10,15 +10,15 @@ Fastly code. This is any request/response handling, and is also the adapter to s
 
 ## Getting started:
 
-### `npm install`
+### Set up environment
 
-This includes a Remix-based `postinstall` script that would look like `remix setup {platform}`: currently `{platform}` can be either `cloudflare-workers` or `node`. Fastly does not run in a node environment, but using cloudflare as the platform installs unnecessary dependencies.
+- Install [`fastly` cli](https://developer.fastly.com/learning/compute/#download-and-install-the-fastly-cli)
 
-The `postinstall` script that is run in this project ('./scripts/setup-remix-for-fastly.js') is copied from [@remix-run/dev/setup.js](https://github.com/remix-run/remix/blob/main/packages/remix-dev/setup.ts) but references an empty-ish fake library ('./@fake-remix-run/fastly) that has the structure Remix expects so that it can finish setting itself up.
+- Run `npm install`
 
-The structure that is currently faked would eventually address platform needs like session storage.
+### Scripts
 
-### `npm run build`
+#### `npm run build`
 
 THIS ONLY BUILDS FASTLY. The reasoning: under the hood, fastly cli runs the `build` script as part of `fastly compute serve`, which is the local dev server command. If a Remix build is thrown in, then during dev work, any Remix changes will result in a double build, one by Remix's watcher, and one by Fastly's `serve --watch`.
 
@@ -26,19 +26,15 @@ Before building, there's a `clean` to remove the Fastly build in ./bin (& ./pkg)
 
 This command alone is prob not helpful locally. These are the useful ones:
 
-#### `npm run build:prod`
-
-Cleans out all the build artifacts and then builds everything (via the remix & fastly commands below) in production mode (the default for both Remix and Fastly via webpack).
-
 #### `npm run build:dev`
 
 Cleans out all the build artifacts and then builds everything under `NODE_ENV=development`
 
-### `npm run build:remix`
+#### `npm run build:remix`
 
 Builds Remix with `remix build`, compiling `ts` from ./app into `js` in ./src/build (server) and ./public/build (client)
 
-###  `npm run build:fastly`
+####  `npm run build:fastly`
 
 0. This requires Remix to already have a build.
 1. Builds Fastly via webpack, compiling `ts` from ./src into './bin/index.js'. At this point, already-built Remix is imported:
@@ -47,7 +43,7 @@ Builds Remix with `remix build`, compiling `ts` from ./app into `js` in ./src/bu
 2. Compiles `js` into './bin/main.wasm'
 3. Packages wasm binary into './pkg/{project-name}.tar.gz'
 
-### `npm run dev`
+#### `npm run dev`
 
 Runs the following in parallel:
 `dev:remix`: Builds Remix in development mode then watches ./app for remix changes and rebuilds into ./src/build

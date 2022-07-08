@@ -7,8 +7,8 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch
-} from "remix";
-import type { MetaFunction } from "remix";
+} from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/cloudflare";
 
 import globalStylesUrl from "./styles/global.css";
 import darkStylesUrl from "./styles/dark.css";

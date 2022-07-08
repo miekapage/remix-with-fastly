@@ -2,8 +2,8 @@
 
 // new Request()
 // Fastly seems to expect only `new Request(ExistingRequest)`
-// or `new Request(url, init)` but Remix also allows
-// `new Request(url, ExistingRequest)`
+// or `new Request(url, init)` even tho the type says otherwise
+// Remix exoects`new Request(url, ExistingRequest)`
 // This was causing POST bodies to be lost
 export function modifyConstructor(
   FastlyRequest: typeof Request
@@ -19,16 +19,8 @@ export function modifyConstructor(
   };
 }
 
-// Request.clone()
-// required in spec, not mentioned in Fastly types
-// only Response.clone is mentioned as TBD
-// NOTE: remix doesn't require body stream to be duplicated
-export function clone(this: Request): Request {
-  return new Request(this);
-}
-
 // Request.formData()
-// required in spec, not mentioned in Fastly types
+// required in spec, type exists, doesn't seem to be implemented
 class FakeFormData {
   append(key: string, value: string | undefined) {
     this[`${key}`] = value;
@@ -48,11 +40,3 @@ export async function formData(this: Request): Promise<FakeFormData | void> {
     console.log('failed to fake formdata');
   }
 }
-
-/////// RESPONSE PATCHES ///////
-
-// Response.statusText
-// Fastly response fails Remix's isResponse
-// Remix's isResponse looks for typeof statusText === 'string'
-// required in spec, not mentioned in Fastly types
-export const statusText = '';
