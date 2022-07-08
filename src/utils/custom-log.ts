@@ -1,4 +1,4 @@
-function getObjectWAllTheKeys(object: Record<PropertyKey, any>): Record<PropertyKey, any> {
+function getAllProperties(object: Record<PropertyKey, any>): Record<PropertyKey, any> {
   if (object.constructor.name === 'Object') {
     return object;
   } else if (object.constructor.name === 'Headers') {
@@ -16,7 +16,7 @@ function getObjectWAllTheKeys(object: Record<PropertyKey, any>): Record<Property
         return {
           ...accumulator,
           [key]:
-            property && typeof property === 'object' ? getObjectWAllTheKeys(property) : property,
+            property && typeof property === 'object' ? getAllProperties(property) : property,
         };
       } catch (error: any) {
         return {
@@ -31,7 +31,7 @@ function getObjectWAllTheKeys(object: Record<PropertyKey, any>): Record<Property
 export default function customLog(...items: any[]): void {
   for (const item of items) {
     item && typeof item === 'object'
-      ? console.log(JSON.stringify(getObjectWAllTheKeys(item), undefined, 2))
+      ? console.log(JSON.stringify(getAllProperties(item), undefined, 2))
       : console.log(item);
   }
 }

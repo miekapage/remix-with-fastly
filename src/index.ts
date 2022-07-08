@@ -1,29 +1,41 @@
-import type { ServerBuild } from '@remix-run/server-runtime';
+/// <reference types="@fastly/js-compute" />
 
-import { createEventHandler } from './create-event-handler';
-import customLog from './utils/custom-log';
-import { clone, formData, modifyConstructor, statusText } from './utils/patches';
+import { createRequestHandler } from '@remix-run/cloudflare';
+import type * as Build from '@remix-run/dev/server-build';
 
-// eslint-disable-next-line import/no-unresolved
 import * as build from './build';
+import assets from './utils/assets';
+import customLog from './utils/custom-log';
+import { formData, modifyConstructor } from './utils/patches';
 
 fastly.log = customLog;
 
 const FastlyRequest = Request;
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Cannot assign to 'Request' because it is a class. ts(2629)
 Request = modifyConstructor(FastlyRequest);
 Request.prototype = FastlyRequest.prototype;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore Property 'clone' does not exist on type 'Request'. ts(2339)
-Request.prototype.clone = clone;
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Property 'formData' does not exist on type 'Request'. ts(2339)
 Request.prototype.formData = formData;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore Property 'statusText' does not exist on type 'Response'. ts(2339)
-Response.prototype.statusText = statusText;
+addEventListener('fetch', createEventHandler());
 
-addEventListener('fetch', createEventHandler({ build: build as unknown as ServerBuild }));
+function createEventHandler(): (event: FetchEvent) => void {
+  const requestHandler = createRequestHandler(build as typeof Build, 'development');
+
+  const handleEvent = async (event: FetchEvent): Promise<Response> => {
+    const { request } = event;
+    const { pathname } = new URL(request.url);
+    const asset = assets[`${pathname}`];
+    if (asset) {
+      return new Response(asset.source, {
+        status: 200,
+        headers: new Headers({ 'content-type': asset.type }),
+      });
+    }
+
+    return requestHandler(request);
+  };
+
+  return (event: FetchEvent) => event.respondWith(handleEvent(event));
+}

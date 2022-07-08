@@ -33,6 +33,7 @@ module.exports = {
     // or core nodejs modules needed for your application.
     new webpack.ProvidePlugin({
       URL: 'core-js/web/url',
+      process: './src/shims/process',
     }),
   ],
   target: 'webworker',

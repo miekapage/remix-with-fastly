@@ -1,4 +1,5 @@
-import { useCatch, Link, json, useLoaderData } from "remix";
+import { json } from "@remix-run/cloudflare";
+import { useCatch, useLoaderData } from "@remix-run/react";
 
 // The `$` in route filenames becomes a pattern that's parsed from the URL and
 // passed to your loaders so you can look up data.
