@@ -3,7 +3,7 @@
 // new Request()
 // Fastly seems to expect only `new Request(ExistingRequest)`
 // or `new Request(url, init)` even tho the type says otherwise
-// Remix exoects`new Request(url, ExistingRequest)`
+// Remix expects `new Request(url, ExistingRequest)`
 // This was causing POST bodies to be lost
 export function modifyConstructor(
   FastlyRequest: typeof Request
